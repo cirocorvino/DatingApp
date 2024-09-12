@@ -482,3 +482,6 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+WebApi/DatingApp.db-shm
+WebApi/DatingApp.db-wal
+WebApi/DatingApp.db
