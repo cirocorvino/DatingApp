@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Ge9pj/Go2fG1l4ai6YUj3dBcxJgdP8PoSQdbXQ88JjmooxssGG+/M4s6L9pVLh8REi+fqeuRpj/lRlhutOVpkw==",
+  "dgSpecHash": "QL2V15dWQWQpomj4K3gzlJvedaXZLnpmKUlSPTjAf4CDOqojWA1grLkA3KjYAcGBHy/JyYcalLPrl7mC4GPZxg==",
   "success": true,
-  "projectFilePath": "C:\\users\\ciroc\\source\\angular\\corso_angular_dotnet\\DatingApp\\WebApi\\WebApi.csproj",
+  "projectFilePath": "c:\\users\\ciroc\\source\\angular\\corso_angular_dotnet\\DatingApp\\WebApi\\WebApi.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

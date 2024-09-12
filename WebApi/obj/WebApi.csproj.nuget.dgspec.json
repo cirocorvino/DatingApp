@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\users\\ciroc\\source\\angular\\corso_angular_dotnet\\DatingApp\\WebApi\\WebApi.csproj": {}
+    "c:\\users\\ciroc\\source\\angular\\corso_angular_dotnet\\DatingApp\\WebApi\\WebApi.csproj": {}
   },
   "projects": {
-    "C:\\users\\ciroc\\source\\angular\\corso_angular_dotnet\\DatingApp\\WebApi\\WebApi.csproj": {
+    "c:\\users\\ciroc\\source\\angular\\corso_angular_dotnet\\DatingApp\\WebApi\\WebApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\users\\ciroc\\source\\angular\\corso_angular_dotnet\\DatingApp\\WebApi\\WebApi.csproj",
+        "projectUniqueName": "c:\\users\\ciroc\\source\\angular\\corso_angular_dotnet\\DatingApp\\WebApi\\WebApi.csproj",
         "projectName": "WebApi",
-        "projectPath": "C:\\users\\ciroc\\source\\angular\\corso_angular_dotnet\\DatingApp\\WebApi\\WebApi.csproj",
+        "projectPath": "c:\\users\\ciroc\\source\\angular\\corso_angular_dotnet\\DatingApp\\WebApi\\WebApi.csproj",
         "packagesPath": "C:\\Users\\ciroc\\.nuget\\packages\\",
-        "outputPath": "C:\\users\\ciroc\\source\\angular\\corso_angular_dotnet\\DatingApp\\WebApi\\obj\\",
+        "outputPath": "c:\\users\\ciroc\\source\\angular\\corso_angular_dotnet\\DatingApp\\WebApi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "D:\\Microsoft Visual Studio\\Shared\\NuGetPackages",
