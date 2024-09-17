@@ -15,8 +15,6 @@ public class AccountController(DatingAppDBContext dBContext, ITokenService token
     [HttpPost("register")]
     public async Task<ActionResult<UserDto>> Register(RegisterDto dto) 
     {
-        if(string.IsNullOrEmpty(dto.Username)) return BadRequest("username cannot be null or empty string");
-
         if(await UserExists(dto.Username)) return BadRequest("user already exists");
 
         using var hmac = new HMACSHA512();
