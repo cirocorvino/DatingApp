@@ -17,21 +17,23 @@ public class AccountController(DatingAppDBContext dBContext, ITokenService token
     {
         if(await UserExists(dto.Username)) return BadRequest("user already exists");
 
-        using var hmac = new HMACSHA512();
+        return Ok();
 
-        var user = new User{
-            UserName = dto.Username.ToLower(),
-            PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(dto.Password)),
-            PasswordSalt = hmac.Key 
-        };
+        // using var hmac = new HMACSHA512();
 
-        dBContext.Users.Add(user);
-        await dBContext.SaveChangesAsync();
+        // var user = new User{
+        //     UserName = dto.Username.ToLower(),
+        //     PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(dto.Password)),
+        //     PasswordSalt = hmac.Key 
+        // };
 
-        return new UserDto{
-            Username = user.UserName,
-            Token = tokenService.CreateToken(user)
-        };
+        // dBContext.Users.Add(user);
+        // await dBContext.SaveChangesAsync();
+
+        // return new UserDto{
+        //     Username = user.UserName,
+        //     Token = tokenService.CreateToken(user)
+        // };
     }
 
     [HttpPost("login")]
