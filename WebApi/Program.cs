@@ -12,6 +12,7 @@ builder.Services.AddIdentityServices(builder.Configuration);
 
 var app = builder.Build();
 
+
 // Configure the HTTP request pipeline.
 
 app.UseMiddleware<ExceptionMiddleware>();
@@ -23,6 +24,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+//migration + seeding with testa data
 using var scope = app.Services.CreateScope();
 var service = scope.ServiceProvider;
 try

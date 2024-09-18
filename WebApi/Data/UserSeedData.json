@@ -108,7 +108,7 @@
     "Country": "Kyrgyzstan",
     "Photos": [
       {
-        "Url": "https://randomuser.me/api/portraits/women/99.jpg",
+        "Url": "https://randomuser.me/api/portraits/men/99.jpg",
         "IsMain": true
       }
     ]
@@ -127,7 +127,7 @@
     "Country": "Antigua and Barbuda",
     "Photos": [
       {
-        "Url": "https://randomuser.me/api/portraits/women/38.jpg",
+        "Url": "https://randomuser.me/api/portraits/men/38.jpg",
         "IsMain": true
       }
     ]
@@ -146,7 +146,7 @@
     "Country": "Senegal",
     "Photos": [
       {
-        "Url": "https://randomuser.me/api/portraits/women/68.jpg",
+        "Url": "https://randomuser.me/api/portraits/men/68.jpg",
         "IsMain": true
       }
     ]
@@ -165,7 +165,7 @@
     "Country": "Faroe Islands",
     "Photos": [
       {
-        "Url": "https://randomuser.me/api/portraits/women/93.jpg",
+        "Url": "https://randomuser.me/api/portraits/men/93.jpg",
         "IsMain": true
       }
     ]
@@ -184,7 +184,7 @@
     "Country": "Heard and McDonald Islands",
     "Photos": [
       {
-        "Url": "https://randomuser.me/api/portraits/women/76.jpg",
+        "Url": "https://randomuser.me/api/portraits/men/76.jpg",
         "IsMain": true
       }
     ]
