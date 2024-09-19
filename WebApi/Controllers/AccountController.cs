@@ -39,8 +39,10 @@ public class AccountController(DatingAppDBContext dBContext, ITokenService token
     [HttpPost("login")]
     public async Task<ActionResult<UserDto>> Login(LoginDto dto)
     {
-
-        var user = await dBContext.Users.FirstOrDefaultAsync(u => u.UserName.ToLower() == dto.Username.ToLower());
+        var user = await dBContext.Users
+            .Include("Photos")
+                .FirstOrDefaultAsync(u => u.UserName.ToLower() == dto.Username.ToLower());
+               
         if(user == null){
             return Unauthorized("username or password not valid");
         }
@@ -53,7 +55,8 @@ public class AccountController(DatingAppDBContext dBContext, ITokenService token
 
         return new UserDto{
             Username = user.UserName,
-            Token = tokenService.CreateToken(user)
+            Token = tokenService.CreateToken(user),
+            PhotoUrl = user.Photos.FirstOrDefault(photo => photo.IsMain)?.Url
         };
     }
 

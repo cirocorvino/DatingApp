@@ -1,6 +1,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Data;
+using WebApi.Helpers;
 using WebApi.Interfaces;
 using WebApi.Services;
 
@@ -27,7 +28,10 @@ public static class ApplicationServiceExtensions
 
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IUserRepository,UserRepository>();
+        services.AddScoped<IPhotoService, PhotoService>();
+
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+        services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
 
         return services;
     }
