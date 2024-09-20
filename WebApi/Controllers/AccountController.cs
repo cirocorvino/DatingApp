@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using System.Text;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Data;
@@ -9,7 +10,7 @@ using WebApi.Interfaces;
 
 namespace WebApi.Controllers;
 
-public class AccountController(DatingAppDBContext dBContext, ITokenService tokenService) : ApiControllerBase
+public class AccountController(DatingAppDBContext context, ITokenService tokenService, IMapper mapper) : ApiControllerBase
 {
 
     [HttpPost("register")]
@@ -17,29 +18,27 @@ public class AccountController(DatingAppDBContext dBContext, ITokenService token
     {
         if(await UserExists(dto.Username)) return BadRequest("user already exists");
 
-        return Ok();
+        using var hmac = new HMACSHA512();
 
-        // using var hmac = new HMACSHA512();
+        var user = mapper.Map<User>(dto);
+        user.UserName = dto.Username.ToLower();
+        user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(dto.Password));
+        user.PasswordSalt = hmac.Key;
 
-        // var user = new User{
-        //     UserName = dto.Username.ToLower(),
-        //     PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(dto.Password)),
-        //     PasswordSalt = hmac.Key 
-        // };
+        context.Users.Add(user);
+        await context.SaveChangesAsync();
 
-        // dBContext.Users.Add(user);
-        // await dBContext.SaveChangesAsync();
-
-        // return new UserDto{
-        //     Username = user.UserName,
-        //     Token = tokenService.CreateToken(user)
-        // };
+        return new UserDto{
+            Username = user.UserName,
+            Token = tokenService.CreateToken(user),
+            KnownAs = user.KnownAs
+        };
     }
 
     [HttpPost("login")]
     public async Task<ActionResult<UserDto>> Login(LoginDto dto)
     {
-        var user = await dBContext.Users
+        var user = await context.Users
             .Include("Photos")
                 .FirstOrDefaultAsync(u => u.UserName.ToLower() == dto.Username.ToLower());
                
@@ -56,13 +55,14 @@ public class AccountController(DatingAppDBContext dBContext, ITokenService token
         return new UserDto{
             Username = user.UserName,
             Token = tokenService.CreateToken(user),
+            KnownAs = user.KnownAs,
             PhotoUrl = user.Photos.FirstOrDefault(photo => photo.IsMain)?.Url
         };
     }
 
     private async Task<bool> UserExists(string username) 
     {
-        return await dBContext.Users.AnyAsync(u => u.UserName.ToLower() == username.ToLower());
+        return await context.Users.AnyAsync(u => u.UserName.ToLower() == username.ToLower());
     }
 
 }
