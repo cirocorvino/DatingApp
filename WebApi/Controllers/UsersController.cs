@@ -9,6 +9,7 @@ using WebApi.Data;
 using WebApi.DTOs;
 using WebApi.Entities;
 using WebApi.Extensions;
+using WebApi.Helpers;
 using WebApi.Interfaces;
 
 namespace WebApi.Controllers;
@@ -17,9 +18,11 @@ namespace WebApi.Controllers;
 public class UsersController(IUserRepository userRepository, IMapper mapper, IPhotoService photoService) : ApiControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<List<MemberDto>>> Get()
+    public async Task<ActionResult<List<MemberDto>>> Get([FromQuery] UserParams userParams)
     {
-        var users = (await userRepository.GetMembersAsync()).ToList();
+        var users = await userRepository.GetMembersAsync(userParams);
+
+        Response.AddPaginationHeader(users);
 
         return users;
     }

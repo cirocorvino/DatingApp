@@ -4,6 +4,7 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using WebApi.DTOs;
 using WebApi.Entities;
+using WebApi.Helpers;
 using WebApi.Interfaces;
 
 namespace WebApi.Data;
@@ -49,10 +50,11 @@ public class UserRepository(DatingAppDBContext context, IMapper mapper) : IUserR
                 .SingleOrDefaultAsync();
     }
 
-    public async Task<IEnumerable<MemberDto>> GetMembersAsync()
+    public async Task<PagedList<MemberDto>> GetMembersAsync(UserParams userParams)
     {
-        return await context.Users
-                .ProjectTo<MemberDto>(mapper.ConfigurationProvider)
-                .ToListAsync();
+        var query = context.Users
+                .ProjectTo<MemberDto>(mapper.ConfigurationProvider);
+
+        return await PagedList<MemberDto>.CreateAsync(query, userParams.PageNumber, userParams.PageSize);
     }
 }

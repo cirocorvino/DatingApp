@@ -1,6 +1,7 @@
 using System;
 using WebApi.DTOs;
 using WebApi.Entities;
+using WebApi.Helpers;
 
 namespace WebApi.Interfaces;
 
@@ -11,7 +12,7 @@ public interface IUserRepository
     Task<IEnumerable<User>> GetUsersAsync();
     Task<User?> GetUserByIdAsync(int id);
     Task<User?> GetUserByUsernameAsync(string username);
-    Task<IEnumerable<MemberDto>> GetMembersAsync();
+    Task<PagedList<MemberDto>> GetMembersAsync(UserParams userParams);
     Task<MemberDto?> GetMemberAsync(string username);
 
 }
