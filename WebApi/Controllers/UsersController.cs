@@ -20,6 +20,7 @@ public class UsersController(IUserRepository userRepository, IMapper mapper, IPh
     [HttpGet]
     public async Task<ActionResult<List<MemberDto>>> Get([FromQuery] UserParams userParams)
     {
+        userParams.CurrentUsername = User.GetUsername();
         var users = await userRepository.GetMembersAsync(userParams);
 
         Response.AddPaginationHeader(users);

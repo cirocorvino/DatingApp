@@ -31,6 +31,7 @@ public class AccountController(DatingAppDBContext context, ITokenService tokenSe
         return new UserDto{
             Username = user.UserName,
             Token = tokenService.CreateToken(user),
+            Gender = user.Gender,
             KnownAs = user.KnownAs
         };
     }
@@ -56,6 +57,7 @@ public class AccountController(DatingAppDBContext context, ITokenService tokenSe
             Username = user.UserName,
             Token = tokenService.CreateToken(user),
             KnownAs = user.KnownAs,
+            Gender = user.Gender,
             PhotoUrl = user.Photos.FirstOrDefault(photo => photo.IsMain)?.Url
         };
     }
