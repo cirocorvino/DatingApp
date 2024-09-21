@@ -2,6 +2,7 @@ using System;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using SQLitePCL;
 using WebApi.DTOs;
 using WebApi.Entities;
 using WebApi.Helpers;
@@ -64,6 +65,12 @@ public class UserRepository(DatingAppDBContext context, IMapper mapper) : IUserR
         var maxDob = DateOnly.FromDateTime(DateTime.Today.AddYears(-userParams.MinAge));
 
         query = query.Where(u => u.DateOfBirth >= minDob && u.DateOfBirth <= maxDob);
+
+        query = userParams.OrderBy switch
+        {
+            "created" => query.OrderByDescending(u => u.Created),
+            _ => query.OrderByDescending(u => u.LastActive)
+        };
 
         return await PagedList<MemberDto>.CreateAsync(query.ProjectTo<MemberDto>(mapper.ConfigurationProvider), userParams.PageNumber, userParams.PageSize);
     }
