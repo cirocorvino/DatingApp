@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable, OnChanges, signal, SimpleChanges } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Member } from '../_models/member';
 import { AccountService } from './account.service';
@@ -18,6 +18,7 @@ export class MembersService {
   baseUrl = environment.apiUrl;
   //members = signal<Member[]>([]);
   paginatedResult = signal<PaginatedResult<Member[]> | null>(null);
+
 
   getMembers(userParams: UserParams) {
 

@@ -4,6 +4,7 @@ import { AccountService } from '../_services/account.service';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { MembersService } from '../_services/members.service';
 
 @Component({
   selector: 'app-nav',
@@ -16,6 +17,7 @@ export class NavBarComponent {
 
   model: any = {};
   accountService = inject(AccountService)
+  membersService = inject(MembersService);
   router = inject(Router);
   toastr = inject(ToastrService);
   
@@ -30,6 +32,7 @@ export class NavBarComponent {
 
   logout(){
     this.accountService.logout();
+    this.membersService.paginatedResult.set(null);
     this.router.navigateByUrl('/');
   }
 }
