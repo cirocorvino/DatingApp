@@ -9,11 +9,13 @@ public class DatingAppDBContext(DbContextOptions dbContextOptions) : DbContext(d
 {
     public DbSet<User> Users { get; set; }
     public DbSet<UserLike> Likes { get; set; }
+    public DbSet<Message> Messages { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder) 
     {
         base.OnModelCreating(builder);
 
+        #region Likes (UserLike) mapping relation
         builder.Entity<UserLike>()
             .HasKey(k => new { k.SourceUserId, k.TargetUserId });
 
@@ -28,6 +30,20 @@ public class DatingAppDBContext(DbContextOptions dbContextOptions) : DbContext(d
             .WithMany(l => l.LikedByUsers)
             .HasForeignKey(s => s.TargetUserId)
             .OnDelete(DeleteBehavior.Cascade);
+        #endregion UserLike mapping relation
+
+
+        #region Messages mapping relation
+        builder.Entity<Message>()
+            .HasOne(m => m.Recipient)
+            .WithMany(usr => usr.MessagesReceived)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Entity<Message>()
+            .HasOne(m => m.Sender)
+            .WithMany(usr => usr.MessagesSent)
+            .OnDelete(DeleteBehavior.Restrict);        
+        #endregion Messages mapping relation
 
     }
 }
