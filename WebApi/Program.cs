@@ -28,6 +28,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.MapHub<PresenceHub>("hubs/presence");
+app.MapHub<MessageHub>("hubs/message");
 
 //migration + seeding with testa data
 using var scope = app.Services.CreateScope();
@@ -38,6 +39,7 @@ try
     var userManager = service.GetRequiredService<UserManager<User>>();
     var roleManager = service.GetRequiredService<RoleManager<Role>>();
     await context.Database.MigrateAsync();
+    await context.Database.ExecuteSqlRawAsync("DELETE FROM [Connections]");
     await Seed.SeedUsers(userManager, roleManager);
 }
 catch (Exception ex)
