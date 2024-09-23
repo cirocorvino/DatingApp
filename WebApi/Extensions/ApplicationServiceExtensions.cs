@@ -3,6 +3,7 @@ using WebApi.Data;
 using WebApi.Helpers;
 using WebApi.Interfaces;
 using WebApi.Services;
+using WebApi.SignalR;
 
 namespace WebApi.Extensions;
 
@@ -34,6 +35,8 @@ public static class ApplicationServiceExtensions
 
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
+        services.AddSignalR();
+        services.AddSingleton<PresenceTracker>();
 
         return services;
     }
