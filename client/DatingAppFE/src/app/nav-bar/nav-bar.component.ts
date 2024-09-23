@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AccountService } from '../_services/account.service';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -14,14 +14,18 @@ import { HasRoleDirective } from '../_directives/has-role.directive';
   templateUrl: './nav-bar.component.html',
   styleUrl: './nav-bar.component.css'
 })
-export class NavBarComponent {
+export class NavBarComponent implements OnInit {
 
   model: any = {};
   accountService = inject(AccountService)
   membersService = inject(MembersService);
   router = inject(Router);
   toastr = inject(ToastrService);
-  
+
+  ngOnInit(): void {
+    this.membersService.init();
+  }
+
   login() {
     this.accountService.login(this.model).subscribe({
       next: _ => {

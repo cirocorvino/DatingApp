@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
-import { inject, Injectable, OnChanges, signal, SimpleChanges } from '@angular/core';
+import { inject, Injectable, OnChanges, OnInit, signal, SimpleChanges, WritableSignal } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Member } from '../_models/member';
 import { of, tap } from 'rxjs';
@@ -8,6 +8,7 @@ import {PaginatedResult} from '../_models/paginations';
 import { UserParams } from '../_models/userParams';
 import { AccountService } from './account.service';
 import { setPaginatedResponse, setPaginationHeaders } from './paginatinHelpers';
+import { User } from '../_models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +20,13 @@ export class MembersService {
   baseUrl = environment.apiUrl;
   paginatedResult = signal<PaginatedResult<Member[]> | null>(null);
   memberCache = new Map();
-  user = this.accountService.currentUser();
-  userParams = signal<UserParams>(new UserParams(this.user));
+  user: User | null = {} as User;
+  userParams: WritableSignal<UserParams> = null!;
+
+  init() {
+    this.user = this.accountService.currentUser();
+    this.userParams = signal<UserParams>(new UserParams(this.accountService.currentUser()));
+  }
 
   resetUserParams() {
     this.userParams.set(new UserParams(this.user));
