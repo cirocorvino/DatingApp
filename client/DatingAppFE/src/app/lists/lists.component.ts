@@ -27,8 +27,8 @@ export class ListsComponent implements OnInit, OnDestroy {
 
 getTitle() {
   switch(this.predicate) {
-    case 'liked': return 'Member you ilke';
-    case 'likedBy': return 'Member who like you';
+    case 'liked': return 'Members you like';
+    case 'likedBy': return 'Members who like you';
     default: return 'Mutual';
   }
 }
