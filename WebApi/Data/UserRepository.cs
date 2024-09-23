@@ -22,7 +22,7 @@ public class UserRepository(DatingAppDBContext context, IMapper mapper) : IUserR
     {
         return await context.Users
             .Include(u =>u.Photos)
-            .SingleOrDefaultAsync(u => u.UserName.ToLower() == username.ToLower());
+            .SingleOrDefaultAsync(u => u.NormalizedUserName == username.ToUpper());
     }
 
     public async Task<IEnumerable<User>> GetUsersAsync()

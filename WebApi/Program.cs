@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Data;
+using WebApi.Entities;
 using WebApi.Extensions;
 using WebApi.Middleware;
 
@@ -30,8 +32,10 @@ var service = scope.ServiceProvider;
 try
 {
     var context = service.GetRequiredService<DatingAppDBContext>();
+    var userManager = service.GetRequiredService<UserManager<User>>();
+    var roleManager = service.GetRequiredService<RoleManager<Role>>();
     await context.Database.MigrateAsync();
-    await Seed.SeedUsers(context);
+    await Seed.SeedUsers(userManager, roleManager);
 }
 catch (Exception ex)
 {

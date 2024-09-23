@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Data;
@@ -10,7 +11,7 @@ using WebApi.Interfaces;
 
 namespace WebApi.Controllers;
 
-public class AccountController(DatingAppDBContext context, ITokenService tokenService, IMapper mapper) : ApiControllerBase
+public class AccountController(UserManager<User> userManager, ITokenService tokenService, IMapper mapper) : ApiControllerBase
 {
 
     [HttpPost("register")]
@@ -22,15 +23,14 @@ public class AccountController(DatingAppDBContext context, ITokenService tokenSe
 
         var user = mapper.Map<User>(dto);
         user.UserName = dto.Username.ToLower();
-        user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(dto.Password));
-        user.PasswordSalt = hmac.Key;
 
-        context.Users.Add(user);
-        await context.SaveChangesAsync();
+        var result = await userManager.CreateAsync(user, dto.Password);
 
-        return new UserDto{
+        if (!result.Succeeded) return BadRequest(result.Errors);
+
+        return new UserDto {
             Username = user.UserName,
-            Token = tokenService.CreateToken(user),
+            Token = await tokenService.CreateToken(user),
             Gender = user.Gender,
             KnownAs = user.KnownAs
         };
@@ -39,23 +39,21 @@ public class AccountController(DatingAppDBContext context, ITokenService tokenSe
     [HttpPost("login")]
     public async Task<ActionResult<UserDto>> Login(LoginDto dto)
     {
-        var user = await context.Users
+        var user = await userManager.Users
             .Include("Photos")
-                .FirstOrDefaultAsync(u => u.UserName.ToLower() == dto.Username.ToLower());
+                .FirstOrDefaultAsync(u => u.NormalizedUserName == dto.Username.ToUpper());
                
-        if(user == null){
+        if(user == null || user.UserName == null){
             return Unauthorized("username or password not valid");
         }
 
-        var hmac = new HMACSHA512(user.PasswordSalt);
-        var hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(dto.Password));
-        for(int i = 0; i < hash.Length; i++){
-            if(hash[i] != user.PasswordHash[i]) return Unauthorized("username or password not valid");
-        }
+        var result = await userManager.CheckPasswordAsync(user, dto.Password);
+
+        if (!result) return Unauthorized();
 
         return new UserDto{
             Username = user.UserName,
-            Token = tokenService.CreateToken(user),
+            Token = await tokenService.CreateToken(user),
             KnownAs = user.KnownAs,
             Gender = user.Gender,
             PhotoUrl = user.Photos.FirstOrDefault(photo => photo.IsMain)?.Url
@@ -64,7 +62,7 @@ public class AccountController(DatingAppDBContext context, ITokenService tokenSe
 
     private async Task<bool> UserExists(string username) 
     {
-        return await context.Users.AnyAsync(u => u.UserName.ToLower() == username.ToLower());
+        return await userManager.Users.AnyAsync(u => u.NormalizedUserName == username.ToUpper());
     }
 
 }
